@@ -29,5 +29,16 @@ AUTHENTICATION_BACKEND = [
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ```
 
+Changes in `urls.py`
+```python
+from django.urls import path, include
+
+urlpatterns = [
+    path("accounts/", include("allauth.urls"))
+]
+```
+
 ## References
-https://www.youtube.com/watch?v=mIlgzn2zuFE
+- https://www.youtube.com/watch?v=mIlgzn2zuFE
+- https://studygyaan.com/django/how-to-add-gmail-log-in-in-django
+- https://studygyaan.com/django/add-facebook-login-to-django-website-using-django-allauth
