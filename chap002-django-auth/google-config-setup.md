@@ -31,10 +31,59 @@ Security Reasons for Using App Passwords
 - Two-Factor Authentication (2FA): If your Google account has two-factor authentication enabled, regular passwords won't work for apps like Django. App passwords bypass the 2FA, allowing the app to authenticate without compromising the overall security setup.
 
 - Revocability: App passwords can be easily revoked without affecting your main account password. If you need to stop access for the app, you can revoke the app password without changing your primary password.
-
 Below are the steps to create app password:
 - Click on [Manage your Google Account](https://myaccount.google.com/?hl=en&utm_source=OGB&utm_medium=act)
 - Click on `Security`
 - Click on `2-Step Verification` and authenticate you mail id.
 - Click on `App Passwords`
 - Enter your app name and create a password there
+
+## Changes in Main Project
+These changes you will perform in your main project
+
+#### modification in setting.py
+- ACCOUNT_EMAIL_VERIFICATION: This setting enforces email verification for users who sign up. It ensures that the email address provided by the user is valid and can be used to recover the account or receive notifications.
+- ACCOUNT_EMAIL_REQUIRED: This setting makes it mandatory for users to provide an email address during the signup process. It is crucial for sending verification emails and for future communication with the user.
+- ACCOUNT_USERNAME_REQUIRED = True  # Require users to provide a username during signup
+- ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # Allow users to log in using either their username or email
+- ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'  # Specify the field name for the username in the user model
+
+```
+# Email Verification
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+
+
+# Login Settings
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+# Signup Settings
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username' 
+
+# Social Account Settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'APP': {
+            'client_id': '<replace with client id created above>',
+            'secret': '<replace with screat key created about>',
+            'key': ''
+        },
+    }
+}
+
+# Alternatively, for production:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '<replace_with_your_gmail>'
+EMAIL_HOST_PASSWORD = '<replace with your less secure app password>'
+```
